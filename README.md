@@ -16,9 +16,9 @@ Extend the base code from Stanislav Petrov: [github](https://github.com/Stanisla
 
 # TODO
 
-set the game canvas in a UI
-display score
-add some powerups
-menu and highscore screens
-decorate with shaders
-use a neon aesthetic
+* set the game canvas in a UI
+* display score
+* add some powerups
+* menu and highscore screens
+* decorate with shaders
+* use a neon aesthetic
