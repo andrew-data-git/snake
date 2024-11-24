@@ -7,7 +7,7 @@
 | ------ | ------ |
 | 20/11/2024 | --/--/ |
 
-Extend the base code from Stanislav Petrov: [github](https://github.com/StanislavPetrovV)
+Extends the base code from Stanislav Petrov: [github](https://github.com/StanislavPetrovV)
 
 ![](https://github.com/andrew-data-git/snake/blob/main/demo.gif)
 
