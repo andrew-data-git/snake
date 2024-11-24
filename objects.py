@@ -1,7 +1,8 @@
 import pygame as pg
-from random import randrange
+from random import randrange, choice
 
 import settings
+
 
 vec2 = pg.math.Vector2
 
@@ -11,9 +12,9 @@ class Snake:
         self.game = game
         self.size = game.tile_size
         self.rect = pg.rect.Rect([0, 0, game.tile_size-5, game.tile_size-5])
-        self.rect.center = self.get_random_position()
+        self.rect.center = self.get_position()
         self.direction = vec2(0, 0)
-        self.step_delay = 100 # ms
+        self.step_delay = settings.INIT_SPEED # ms
         self.time = 0
         self.length = 1
         self.segments = []
@@ -39,9 +40,13 @@ class Snake:
     def check_food(self):
         '''Check if the snake's head occupies same tile as food'''
         if self.rect.center == self.game.food.rect.center:
-            self.game.food.rect.center = self.get_random_position()
+            self.game.food.rect.center = self.get_position()
             self.length += 1
             self.game.score += 10
+
+            if self.game.score % 50 == 0:
+                self.game.level += 1
+                self.step_delay -= 30
 
     def delta_time(self):
         '''Match movement to FPS'''
@@ -53,8 +58,18 @@ class Snake:
 
     def get_random_position(self):
         '''Helper function to redraw snake objects'''
-        vals = self.size//2, self.game.size - self.size//2, self.size  
+        vals = (self.size//2, self.game.size - self.size//2, self.size)
         return [randrange(*vals)]*2
+    
+    def get_nonrandom_position(self):
+        chosen_tile = choice(self.game.pos_list)
+        return chosen_tile#self.get_random_position()
+    
+    def get_position(self):
+        '''If new game draw randomly, otherwise exluce occupied squares'''
+        if self.game.score > 0:
+            return self.get_nonrandom_position()
+        return self.get_random_position()
     
     def move(self):
         '''Move snake based on direction attribute'''
@@ -92,9 +107,15 @@ class Food:
         self.game = game
         self.size = game.tile_size
         self.rect = pg.rect.Rect([0, 0, game.tile_size-20, game.tile_size-20])
-        self.rect.center = self.game.snake.get_random_position()
         self.colour = settings.FOOD_COLOUR
+        self.rect.center = self.game.snake.get_position()
 
     def draw(self):
         '''Draw food'''
         pg.draw.rect(self.game.surface, self.colour, self.rect)
+
+
+class Boost:
+    def __init__(self, game):
+        pass # child of Food class
+    

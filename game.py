@@ -12,7 +12,9 @@ class Game:
         self.tile_size = settings.TILE_SIZE
         self.surface = pg.Surface((self.size, self.size))
         self.score = 0
+        self.level = 0
         self.new_game()
+        self.pos_list = self.make_pos_list()
 
     def draw_grid(self):
         '''Blit our playing surface with a grid'''
@@ -26,6 +28,17 @@ class Game:
                       (0,y),
                       (self.size,y)) 
                       for y in range(0, self.size, self.tile_size)]
+        
+    def make_pos_list(self):
+        '''List of unoccupied squares by snake'''
+        pos_list = []
+        for x in range(0, self.size, self.tile_size):
+            for y in range(0, self.size, self.tile_size):
+                pos_list.append((x+self.tile_size//2, y+self.tile_size//2))
+
+        segment_centres = [s.center for s in self.snake.segments]
+        pos_list = [pos for pos in pos_list if pos not in segment_centres]
+        return pos_list
 
     def new_game(self):
         '''Instantiate new Snake and Food objects'''
@@ -35,7 +48,6 @@ class Game:
 
     def draw(self):
         '''Draw all entities onto playing surface'''
-        # self.display.blit(self.surface, (settings.PADDING, settings.PADDING))
         self.surface.fill(self.bg_colour)
         self.snake.draw()
         self.food.draw()
@@ -44,15 +56,5 @@ class Game:
     def update(self):
         '''Update game'''
         self.snake.update()
-
-    def snake_controls(self):
-        '''Parse events'''
-        for event in pg.event.get():
-            print('game', event)
-            self.snake.control(event)
-
-    def run(self):
-        '''Run game'''
-        self.snake_controls()
-        self.update()
+        self.make_pos_list()
         self.draw()

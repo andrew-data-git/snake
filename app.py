@@ -4,6 +4,7 @@ import sys
 from game import Game
 import settings
 
+
 class App():
     def __init__(self, display):
         self.window_size = (settings.APP_WINDOW_WIDTH, settings.APP_WINDOW_HEIGHT) 
@@ -27,20 +28,28 @@ class App():
         self.info_surface.fill(settings.INFO_COLOUR)  # Example: Fill with a solid color
 
         font = pg.font.Font(None, 36)
-        title_text = "Snake game"
-        score_text = str(self.game.score)
 
+        title_text = "Snake game"
         title_surface = font.render(title_text, True, settings.TEXT_COLOUR)
         title_rect = title_surface.get_rect()
-        title_rect.midtop = (self.info_rect.width // 2, 10)
+        title_rect.midtop = (self.info_rect.width // 2, settings.PADDING)
 
+        score_text = str(self.game.score)
         score_surface = font.render(score_text, True, settings.TEXT_COLOUR)
         score_rect = score_surface.get_rect()
-        score_rect.midtop = (self.info_rect.width // 2, title_rect.bottom + 10)  # Center horizontally, below the title
+        score_rect.midtop = (self.info_rect.width // 2, 
+                             title_rect.bottom + settings.PADDING)  
+        
 
-        # Blit the text onto the info_surface
+        level_text = f'Level: {str(self.game.level)}'
+        level_surface = font.render(level_text, True, settings.TEXT_COLOUR)
+        level_rect = level_surface.get_rect()
+        level_rect.midtop = (self.info_rect.width // 2, 
+                             score_rect.bottom + settings.PADDING)  
+        
         self.info_surface.blit(title_surface, title_rect)
         self.info_surface.blit(score_surface, score_rect)
+        self.info_surface.blit(level_surface, level_rect)
 
     def update(self):
         '''Update application'''
@@ -49,18 +58,18 @@ class App():
         self.populate_info()
         pg.display.flip()
 
-    def check_event(self): # TODO something is wrong here!!!! keystrokes are not all being logged
+    def check_event(self):
         '''Parse events'''
         for event in pg.event.get():
-            print('app', event)
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            self.game.snake.control(event)
 
     def run(self):
         '''Run application'''
         while True:
-            self.game.run()
             self.check_event()
+            self.game.update()
             self.update()
             self.draw()
