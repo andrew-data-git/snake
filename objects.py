@@ -62,8 +62,9 @@ class Snake:
         return [randrange(*vals)]*2
     
     def get_nonrandom_position(self):
+        '''Take from the list of viable positions'''
         chosen_tile = choice(self.game.pos_list)
-        return chosen_tile#self.get_random_position()
+        return chosen_tile
     
     def get_position(self):
         '''If new game draw randomly, otherwise exluce occupied squares'''

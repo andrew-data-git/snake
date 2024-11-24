@@ -45,6 +45,7 @@ class Game:
         self.snake = Snake(self)
         self.food = Food(self)
         self.score = 0
+        self.level = 0
 
     def draw(self):
         '''Draw all entities onto playing surface'''

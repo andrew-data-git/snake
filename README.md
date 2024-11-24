@@ -5,7 +5,7 @@
 
 | Date Started | Date Completed |
 | ------ | ------ |
-| 20/11/2024 | --/--/ |
+| 20/11/2024 | --/--/-- |
 
 Extends the base code from Stanislav Petrov: [github](https://github.com/StanislavPetrovV)
 
@@ -13,10 +13,10 @@ Extends the base code from Stanislav Petrov: [github](https://github.com/Stanisl
 
 ## Features
 
-- 
+- Basic snake game, with score and increasing difficulty
+- Game surface nested in applicaiton surface
 
 # TODO
 
-* add some powerups
-* menu and highscore screens
+* add menu and highscore screens, use App.game_active
 * decorate with shaders

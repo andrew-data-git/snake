@@ -14,6 +14,7 @@ class App():
         self.info_surface = pg.Surface((settings.INFO_WIDTH, settings.INFO_HEIGHT))
         self.info_rect = self.info_surface.get_rect()
         self.clock = pg.time.Clock()
+        self.game_active = True
         self.game = Game()
 
     def draw(self):
@@ -32,14 +33,13 @@ class App():
         title_text = "Snake game"
         title_surface = font.render(title_text, True, settings.TEXT_COLOUR)
         title_rect = title_surface.get_rect()
-        title_rect.midtop = (self.info_rect.width // 2, settings.PADDING)
+        title_rect.midtop = (self.info_rect.width // 2, self.info_rect.height//2 - 2*settings.PADDING)
 
         score_text = str(self.game.score)
         score_surface = font.render(score_text, True, settings.TEXT_COLOUR)
         score_rect = score_surface.get_rect()
         score_rect.midtop = (self.info_rect.width // 2, 
                              title_rect.bottom + settings.PADDING)  
-        
 
         level_text = f'Level: {str(self.game.level)}'
         level_surface = font.render(level_text, True, settings.TEXT_COLOUR)
@@ -54,7 +54,6 @@ class App():
     def update(self):
         '''Update application'''
         self.clock.tick(settings.FPS)
-        self.game.update()
         self.populate_info()
         pg.display.flip()
 
@@ -70,6 +69,8 @@ class App():
         '''Run application'''
         while True:
             self.check_event()
-            self.game.update()
             self.update()
             self.draw()
+
+            if self.game_active:
+               self.game.update()
